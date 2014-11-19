@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<!-- <bean id="userInfo" class="com.blackice.beans.UserInfoBean" scope="session">
+	    <aop:scoped-proxy />
+	</bean> -->
+	
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+      <property name="scopes">
+          <map>
+              <entry key="thread">
+                  <bean class="com.blackice.beans.SimpleThreadScope"/>
+              </entry>
+          </map>
+      </property>
+  	</bean>
+     
+    <bean id="testA" class="com.blackice.beans.UserInfoBean"  scope="thread" />
+    <bean id="userInfoBean" class="com.blackice.beans.UserInfoBean"  scope="thread" />
+    
+    
+    
+    
+    <bean id="volatileScope" class="com.blackice.config.AccountScope">
+	</bean>
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+        <property name="scopes">
+            <map>
+                <entry key="volatile">
+                    <ref bean="volatileScope" />
+                </entry>
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="tenant" class="com.blackice.beans.CentralDbService" scope="volatile">
+		
+	</bean>
+    
+    
+</beans>
